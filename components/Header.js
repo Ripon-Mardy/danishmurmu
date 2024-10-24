@@ -11,13 +11,17 @@ export default function Navbar() {
     setIsOpen(!isOpen);
   };
 
+  const closeMenu = () => {
+    setIsOpen(false);
+  };
+
   return (
-    <nav className="bg-gray-800 p-4">
+    <nav className="bg-gray-800 p-4 relative">
       <div className="container mx-auto flex justify-between items-center">
         {/* Left Side (Logo) */}
-        <div className="text-white text-2xl font-bold">Logo</div>
+        <div className="text-white text-2xl font-bold">Danish</div>
 
-        {/* Middle Side (Navigation Menu) */}
+        {/* Middle Side (Navigation Menu for Desktop) */}
         <div className="hidden md:flex space-x-6">
           <a href="#home" className="text-white hover:text-gray-300">Home</a>
           <a href="#about" className="text-white hover:text-gray-300">About</a>
@@ -25,7 +29,7 @@ export default function Navbar() {
           <a href="#contact" className="text-white hover:text-gray-300">Contact</a>
         </div>
 
-        {/* Right Side (Contact Me Button) */}
+        {/* Right Side (Contact Me Button for Desktop) */}
         <div className="hidden md:block">
           <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition">
             Contact Me
@@ -42,18 +46,26 @@ export default function Navbar() {
         </div>
       </div>
 
+      {/* Overlay to close menu when clicked outside */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
+          onClick={closeMenu}
+        ></div>
+      )}
+
       {/* Mobile Menu */}
       <motion.div
-        initial={{ opacity: 0, y: -50 }}
-        animate={{ opacity: isOpen ? 1 : 0, y: isOpen ? 0 : -50 }}
-        transition={{ duration: 0.3 }}
-        className={`${isOpen ? 'block' : 'hidden'} md:hidden`}
+        initial={{ x: '100%' }}
+        animate={{ x: isOpen ? 0 : '100%' }}
+        transition={{ type: 'spring', stiffness: 100, damping: 20 }}
+        className={`fixed top-0 right-0 w-3/4 h-full bg-gray-700 text-white z-50 p-6 md:hidden`}
       >
-        <div className="space-y-2 px-4 pt-2 pb-4 bg-gray-700">
-          <a href="#home" className="block text-white hover:text-gray-300">Home</a>
-          <a href="#about" className="block text-white hover:text-gray-300">About</a>
-          <a href="#services" className="block text-white hover:text-gray-300">Services</a>
-          <a href="#contact" className="block text-white hover:text-gray-300">Contact</a>
+        <div className="flex flex-col space-y-6">
+          <a href="#home" className="text-white hover:text-gray-300" onClick={closeMenu}>Home</a>
+          <a href="#about" className="text-white hover:text-gray-300" onClick={closeMenu}>About</a>
+          <a href="#services" className="text-white hover:text-gray-300" onClick={closeMenu}>Services</a>
+          <a href="#contact" className="text-white hover:text-gray-300" onClick={closeMenu}>Contact</a>
         </div>
       </motion.div>
     </nav>
